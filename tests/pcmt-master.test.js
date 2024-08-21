@@ -1,9 +1,10 @@
 const oracledb = require('oracledb');
 
 const dbConfig = {
-  user: 'yourUsername',
-  password: 'yourPassword',
-  connectString: 'yourConnectionString'
+  user: 'sys',
+  password: 'StrongPassword123',
+  connectString: 'localhost:1521/ORCLPDB1',
+  privilege: oracledb.SYSDBA
 };
 
 describe('Inserting a new project into pcmt_master table', () => {
