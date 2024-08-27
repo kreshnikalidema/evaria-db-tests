@@ -4,6 +4,10 @@ module.exports = {
     coverageDirectory: './coverage/',
     collectCoverage: true,
     testTimeout: 30000,
-    testMatch: ['**/tests/**/*.test.js']
+    testMatch: ['**/tests/**/*.test.js'],
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "/src/"
+  ],
   };
   

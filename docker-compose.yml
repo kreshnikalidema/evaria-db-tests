@@ -5,16 +5,16 @@ services:
     image: container-registry.oracle.com/database/enterprise:latest
     container_name: oracle-db
     ports:
-      - "1521:1521"  # Oracle DB port
-      - "5500:5500"  # Oracle EM Express port
+      - "1521:1521"
+      - "5500:5500"
     environment:
       - ORACLE_SID=ORCLCDB
       - ORACLE_PDB=ORCLPDB1
-      - ORACLE_PWD=StrongPassword123  # Remember to use a secure password
-      - ORACLE_CHARACTERSET=AL32UTF8  # Sets the character set for the database
+      - ORACLE_PWD=StrongPassword123
+      - ORACLE_CHARACTERSET=AL32UTF8
     volumes:
-      - oracle-data:/opt/oracle/oradata  # Persistent data storage
-    restart: always  # Automatically restart the container if it stops
+      - oracle-data:/opt/oracle/oradata
+    restart: always
 
 volumes:
   oracle-data:
