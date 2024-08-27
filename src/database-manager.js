@@ -1,5 +1,4 @@
 const oracledb = require('oracledb');
-const tables = require('./database-tables');
 
 // Set fetchAsString option for CLOBs
 oracledb.fetchAsString = [oracledb.CLOB];
@@ -18,30 +17,6 @@ class DatabaseManager {
         } catch (error) {
             console.error('Error getting connection:', error);
             throw error;
-        }
-    }
-
-    static async createTables(connection) {
-        for (const table of tables) {
-            try {
-                const query = `SELECT COUNT(*) AS count FROM ${table.name}`;
-                await connection.execute(query);
-                console.log(`Table ${table.name} already exists`);
-            } catch (error) {
-                if (error.errorNum === 942) { // ORA-00942: table or view does not exist
-                    console.log(`Table ${table.name} does not exist, creating...`);
-                    try {
-                        await connection.execute(table.createSQL);
-                        console.log(`Table ${table.name} created successfully`);
-                    } catch (createError) {
-                        console.error(`Error creating table ${table.name}:`, createError);
-                        throw createError;
-                    }
-                } else {
-                    console.error(`Error checking table ${table.name}:`, error);
-                    throw error;
-                }
-            }
         }
     }
 
