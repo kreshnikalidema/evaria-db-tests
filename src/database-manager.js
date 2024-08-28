@@ -7,10 +7,9 @@ class DatabaseManager {
     static async getConnection() {
         try {
             const connection = await oracledb.getConnection({
-                user: 'SYS',
-                password: 'StrongPassword123',
-                connectString: 'localhost:1521/ORCLPDB1',
-                privilege: oracledb.SYSDBA
+                user: 'evariauser',
+                password: 'evariapass',
+                connectString: 'localhost:1521/ORCLPDB2'
             });
             console.log('Database connection established');
             return connection;
@@ -20,17 +19,17 @@ class DatabaseManager {
         }
     }
 
-    static resultToObjects(result) {
-        const rows = result.rows;
-        const columns = result.metaData.map(col => col.name.toLowerCase());
-
-        return rows.map(row => {
-            const obj = {};
-            row.forEach((val, index) => {
-                obj[columns[index]] = val;
+    static async executeQuery(connection, query, params) {
+        try {
+            const result = await connection.execute(query, params, {
+                outFormat: oracledb.OUT_FORMAT_OBJECT, 
+                autoCommit: true
             });
-            return obj;
-        });
+            return result;
+        } catch (error) {
+            console.error('Error executeQuery:', error);
+            throw error;
+        }
     }
 }
 

@@ -106,20 +106,31 @@ CREATE TABLE pcmt_action_logs (
     contract_type VARCHAR2(50)
 );
 
+
+-- Create sequence
+CREATE SEQUENCE pcmt_pv_number_seq
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+
+
 -- Create function
 CREATE OR REPLACE FUNCTION PCMT_GENERATE_PV_NUMBER(
     p_project_id VARCHAR2,
-    p_cost_type VARCHAR2,
-    p_user_email VARCHAR2
+    p_cost_type VARCHAR2
 ) RETURN VARCHAR2 IS
     v_pv_number VARCHAR2(50);
     v_next_number NUMBER;
 BEGIN
-    v_next_number := 1;
+    SELECT pcmt_pv_number_seq.NEXTVAL INTO v_next_number FROM dual;
+    
     v_pv_number := p_project_id || '-PV-' || p_cost_type || '-' || LPAD(v_next_number , 4, '0');
+    
     RETURN v_pv_number;
 END;
 /
+
 
 -- Create trigger
 CREATE OR REPLACE TRIGGER trg_before_insert_pcmt_master
@@ -128,8 +139,7 @@ FOR EACH ROW
 BEGIN
     :NEW.pv_number := PCMT_GENERATE_PV_NUMBER(
         p_project_id => :NEW.project_id,
-        p_cost_type => :NEW.discipline_id,
-        p_user_email => 'default_email@example.com'
+        p_cost_type => :NEW.discipline_id
     );
 END;
 /
