@@ -14,7 +14,7 @@ describe('eVaria SQL Tests', () => {
         }
     });
 
-    test('should insert into pcmt_master and store generated pv_number', async () => {
+    test('should insert into pcmt_master, and verify generated pv_number', async () => {
         const insertQuery = `
             INSERT INTO pcmt_master (project_id, rev_no, discipline_id, user_insert, dt_insert, data_json)
             VALUES (:project_id, :rev_no, :discipline_id, :user_insert, SYSDATE, :data_json)
